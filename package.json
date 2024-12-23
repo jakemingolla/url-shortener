@@ -1,7 +1,14 @@
 {
   "name": "url-shortener",
+  "version": "0.0.1",
   "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
+    "launch": "bun run src/index.ts",
+    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/health-check)\" != \"200\" ]]; do sleep 1; done'"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
