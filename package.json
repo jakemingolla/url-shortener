@@ -27,8 +27,8 @@
     "seed:make": "dotenvx run -- bunx kysely seed make",
     "seed:up": "dotenvx run -- bunx kysely seed run",
     "config:encrypt": "bunx dotenvx encrypt",
-    "config:get": "bunx dotenvx get",
-    "config:set": "bunx dotenvx set",
+    "config:get": "dotenvx get",
+    "config:set": "dotenvx set",
     "test": "dotenvx run -- bun test"
   },
   "type": "module",
