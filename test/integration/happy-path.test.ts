@@ -12,3 +12,8 @@ test("version endpoint returns version", async () => {
   expect(res.status).toBe(200);
   expect(await res.text()).toBe(version);
 });
+
+test("unknown endpoint returns 404", async () => {
+  const res = await fetch("http://localhost:3000/unknown");
+  expect(res.status).toBe(404);
+});

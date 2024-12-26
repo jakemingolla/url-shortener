@@ -2,17 +2,31 @@
   "name": "url-shortener",
   "version": "0.0.1",
   "module": "src/index.ts",
-  "type": "module",
-  "scripts": {
-    "start": "docker compose up -d",
-    "stop": "docker compose down",
-    "launch": "bun run src/index.ts",
-    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/health-check)\" != \"200\" ]]; do sleep 1; done'"
-  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.1.14",
+    "kysely-codegen": "^0.17.0",
+    "kysely-ctl": "^0.10.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
+    "restart": "docker compose restart",
+    "logs": "docker compose logs -f",
+    "launch:dev": "bun --hot src/index.ts",
+    "launch": "bun run src/index.ts",
+    "migration:generate": "bunx --bun kysely migrate make",
+    "migration:up": "bunx --bun kysely migrate latest",
+    "migration:down": "bunx --bun kysely migrate down",
+    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/health-check)\" != \"200\" ]]; do sleep 1; done'"
+  },
+  "type": "module",
+  "dependencies": {
+    "@elysiajs/swagger": "^1.2.0",
+    "elysia": "^1.2.0",
+    "kysely": "^0.27.5",
+    "kysely-bun-worker": "^0.7.0"
   }
 }

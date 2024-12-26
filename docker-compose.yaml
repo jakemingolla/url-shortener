@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    command: bun run launch
+    command: bun run launch:dev
     volumes:
       - .:/app
     ports:
