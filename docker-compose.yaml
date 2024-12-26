@@ -9,6 +9,7 @@ services:
       - 3000:3000
     environment:
       - PGHOST=postgres
+      - DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY} # Forwarded in CI
   postgres:
     image: postgres:17.2-alpine
     ports:
