@@ -31,9 +31,9 @@ jobs:
           echo "$DOTENV_PRIVATE_KEY" | rev
           bun run config:get PGHOST
       - run: bun start
+      - run: bun run wait-for-startup
       - run: bun run migration:up
       - run: bun run seed:up
-      - run: bun run wait-for-startup
       - run: bun test
       - run: |
           bun run logs:app
