@@ -24,6 +24,7 @@ jobs:
         with:
           bun-version-file: ".bun-version"
       - run: bun install --frozen-lockfile
+      - run: bun run seed:up
       - run: bun start
       - run: bun run wait-for-startup
       - run: bun test

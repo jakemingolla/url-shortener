@@ -17,3 +17,9 @@ test("unknown endpoint returns 404", async () => {
   const res = await fetch("http://localhost:3000/unknown");
   expect(res.status).toBe(404);
 });
+
+test("test count is 1", async () => {
+  const res = await fetch("http://localhost:3000/api/count");
+  expect(res.status).toBe(200);
+  expect(await res.json()).toMatchObject({ count: "1" });
+});

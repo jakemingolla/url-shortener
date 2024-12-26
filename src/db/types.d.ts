@@ -11,7 +11,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export interface UrlShortenerRedirects {
+export interface Redirects {
   created_at: Generated<Timestamp>;
   deleted_at: Timestamp | null;
   destination: string;
@@ -22,5 +22,5 @@ export interface UrlShortenerRedirects {
 }
 
 export interface DB {
-  "url_shortener.redirects": UrlShortenerRedirects;
+  redirects: Redirects;
 }

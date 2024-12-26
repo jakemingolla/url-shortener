@@ -2,6 +2,14 @@ import { Kysely, PostgresDialect, WithSchemaPlugin } from "kysely";
 import type { DB } from "./types";
 import pg from "pg";
 
+["PGHOST", "PGPORT", "PGUSER", "PGPASSWORD", "PGDATABASE", "PGSCHEMA"].forEach(
+  (envVar) => {
+    if (!process.env[envVar]) {
+      throw new Error(`Missing database configuration: ${envVar}`);
+    }
+  },
+);
+
 const dialect = new PostgresDialect({
   pool: new pg.Pool({
     host: process.env.PGHOST,
@@ -14,5 +22,5 @@ const dialect = new PostgresDialect({
 
 export const db = new Kysely<DB>({
   dialect,
-  plugins: [new WithSchemaPlugin("url_shortener")],
+  plugins: [new WithSchemaPlugin(process.env.PGSCHEMA!)],
 });
