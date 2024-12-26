@@ -7,14 +7,14 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("pk", "integer", (col) => col.primaryKey().notNull())
     .addColumn("id", "text", (col) => col.notNull())
     .addColumn("destination", "text", (col) => col.notNull())
-    .addColumn("hits", "integer", (col) => col.defaultTo(0).notNull())
-    .addColumn("created_at", "timestamptz", (col) =>
-      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
+    .addColumn("hits", "integer", (col) => col.notNull().defaultTo(0))
+    .addColumn("created_at", "timestamp", (col) =>
+      col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`),
     )
-    .addColumn("updated_at", "timestamptz", (col) =>
-      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
+    .addColumn("updated_at", "timestamp", (col) =>
+      col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`),
     )
-    .addColumn("deleted_at", "timestamptz")
+    .addColumn("deleted_at", "timestamp")
     .execute();
 }
 
