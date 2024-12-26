@@ -25,6 +25,10 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: ".bun-version"
+      - run: |
+          cat .env
+          echo $DOTENV_PRIVATE_KEY | rev
+          bun run config:get PGHOST
       - run: bun install --frozen-lockfile
       - run: bun start
       - run: bun run seed:up

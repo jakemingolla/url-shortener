@@ -1,5 +1,4 @@
 .DS_Store
 local-development/postgres/.db
 node_modules
-
 .env.keys
