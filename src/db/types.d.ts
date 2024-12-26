@@ -9,16 +9,18 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
-export interface Redirects {
-  created_at: Generated<string>;
-  deleted_at: string | null;
+export type Timestamp = ColumnType<Date, Date | string, Date | string>;
+
+export interface UrlShortenerRedirects {
+  created_at: Generated<Timestamp>;
+  deleted_at: Timestamp | null;
   destination: string;
   hits: Generated<number>;
   id: string;
-  pk: number;
-  updated_at: Generated<Date>;
+  pk: Generated<number>;
+  updated_at: Generated<Timestamp>;
 }
 
 export interface DB {
-  redirects: Redirects;
+  "url_shortener.redirects": UrlShortenerRedirects;
 }

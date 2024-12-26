@@ -2,7 +2,7 @@ import { defineConfig } from "kysely-ctl";
 import type { DefineConfigInput } from "kysely-ctl";
 import { db } from "./src/db";
 
-const getMigrationPrefix = () => {
+const getPrefix = () => {
   const now = new Date();
   const year = now.getUTCFullYear().toString();
   const month = now.getUTCMonth() + 1;
@@ -16,8 +16,12 @@ const getMigrationPrefix = () => {
 const config: DefineConfigInput = {
   kysely: db,
   migrations: {
-    migrationFolder: "src/db/migrations",
-    getMigrationPrefix,
+    migrationFolder: "db/migrations",
+    getMigrationPrefix: getPrefix,
+  },
+  seeds: {
+    seedFolder: "db/seeds",
+    getSeedPrefix: getPrefix,
   },
 };
 

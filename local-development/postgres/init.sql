@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS url_shortener;
+DROP SCHEMA IF EXISTS public;
