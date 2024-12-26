@@ -32,5 +32,6 @@ jobs:
       - run: bun test
       - run: |
           bun run logs:app
+          bun run logs:postgres
           bun stop
         if: always()
