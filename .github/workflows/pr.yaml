@@ -28,5 +28,7 @@ jobs:
       - run: bun start
       - run: bun run wait-for-startup
       - run: bun test
-      - run: bun stop
+      - run: |
+          bun run logs:app
+          bun stop
         if: always()
