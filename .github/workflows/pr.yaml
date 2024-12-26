@@ -28,7 +28,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: |
           cat .env
-          echo $DOTENV_PRIVATE_KEY | rev
+          echo "$DOTENV_PRIVATE_KEY" | rev
           bun run config:get PGHOST
       - run: bun install --frozen-lockfile
       - run: bun start
