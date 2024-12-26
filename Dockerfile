@@ -6,4 +6,4 @@ COPY . .
 
 RUN bun install --frozen-lockfile --production
 
-CMD ["bun", "start"]
+CMD ["bun", "run", "launch"]

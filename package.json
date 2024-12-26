@@ -2,17 +2,41 @@
   "name": "url-shortener",
   "version": "0.0.1",
   "module": "src/index.ts",
-  "type": "module",
-  "scripts": {
-    "start": "docker compose up -d",
-    "stop": "docker compose down",
-    "launch": "bun run src/index.ts",
-    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/health-check)\" != \"200\" ]]; do sleep 1; done'"
-  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.1.14",
+    "kysely-codegen": "^0.17.0",
+    "kysely-ctl": "^0.10.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
+    "restart": "docker compose restart",
+    "logs": "docker compose logs -f",
+    "logs:app": "docker compose logs app",
+    "logs:postgres": "docker compose logs postgres",
+    "launch:dev": "dotenvx run -- bun run --hot src/index.ts",
+    "launch": "dotenvx run -- bun run src/index.ts",
+    "migration:make": "dotenvx run -- kysely migrate make",
+    "migration:up": "dotenvx run -- kysely migrate latest",
+    "migration:down": "dotenvx run -- kysely migrate down",
+    "codegen": "dotenvx run -- kysely-codegen --dialect postgres --out-file src/db/types.d.ts --schema url_shortener",
+    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/health-check)\" != \"200\" ]]; do sleep 1; done'",
+    "seed:make": "dotenvx run -- kysely seed make",
+    "seed:up": "dotenvx run -- kysely seed run",
+    "config:encrypt": "dotenvx encrypt",
+    "config:get": "dotenvx get",
+    "config:set": "dotenvx set",
+    "test": "dotenvx run -- bun test"
+  },
+  "type": "module",
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.31.3",
+    "@elysiajs/swagger": "^1.2.0",
+    "elysia": "^1.2.0",
+    "kysely": "^0.27.5",
+    "pg": "^8.13.1"
   }
 }
