@@ -11,16 +11,16 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export interface Redirects {
-  created_at: Generated<Timestamp>;
-  deleted_at: Timestamp | null;
+export interface Redirect {
+  createdAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
   destination: string;
   hits: Generated<number>;
   id: string;
   pk: Generated<number>;
-  updated_at: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
 }
 
 export interface DB {
-  redirects: Redirects;
+  redirects: Redirect;
 }
