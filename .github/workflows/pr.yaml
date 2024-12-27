@@ -15,6 +15,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
       DOTENV_PRIVATE_KEY: ${{ secrets.DOTENV_PRIVATE_KEY }}
     steps:
@@ -32,6 +33,7 @@ jobs:
           bun run config:get PGHOST
       - run: bun start
       - run: bun run wait-for-startup
+        timeout-minutes: 1
       - run: bun run migration:up
       - run: bun run seed:up
       - run: bun test

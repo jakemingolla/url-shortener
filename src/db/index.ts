@@ -1,4 +1,9 @@
-import { Kysely, PostgresDialect, WithSchemaPlugin } from "kysely";
+import {
+  Kysely,
+  PostgresDialect,
+  WithSchemaPlugin,
+  CamelCasePlugin,
+} from "kysely";
 import type { DB } from "./types";
 import pg from "pg";
 
@@ -22,5 +27,5 @@ const dialect = new PostgresDialect({
 
 export const db = new Kysely<DB>({
   dialect,
-  plugins: [new WithSchemaPlugin(process.env.PGSCHEMA!)],
+  plugins: [new WithSchemaPlugin(process.env.PGSCHEMA!), new CamelCasePlugin()],
 });
