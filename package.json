@@ -23,7 +23,7 @@
     "migration:up": "dotenvx run -- kysely migrate latest",
     "migration:down": "dotenvx run -- kysely migrate down",
     "codegen": "dotenvx run -- kysely-codegen --dialect postgres --out-file src/db/types.d.ts --schema url_shortener --singular --camel-case",
-    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/health-check)\" != \"200\" ]]; do sleep 1; done'",
+    "wait-for-startup": "bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/api/v1/health-check)\" != \"200\" ]]; do sleep 1; done'",
     "seed:make": "dotenvx run -- kysely seed make",
     "seed:up": "dotenvx run -- kysely seed run",
     "config:encrypt": "dotenvx encrypt",
