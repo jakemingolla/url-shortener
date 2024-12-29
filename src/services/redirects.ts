@@ -1,4 +1,4 @@
-import { Elysia, t } from "elysia";
+import { Elysia, error, t } from "elysia";
 import { RedirectsDatasource } from "@/datasources/redirects";
 import { db } from "@/db";
 
@@ -35,6 +35,10 @@ export const redirects = new Elysia()
   .patch(
     "/redirects/:id",
     async ({ params: { id }, body: { destination }, datasource }) => {
+      if (await datasource.detectLoop(id, destination)) {
+        return error(400, "Redirect loop detected.");
+      }
+
       await datasource.updateDestination(id, destination);
       return { id };
     },

@@ -2,10 +2,12 @@ import { expect, test, afterEach } from "bun:test";
 
 let createdRedirects: string[] = [];
 
-afterEach(() => {
-  createdRedirects.forEach((id) => {
-    fetch(`http://localhost:3000/redirects/${id}`, { method: "DELETE" });
-  });
+afterEach(async () => {
+  for (const id of createdRedirects) {
+    await fetch(`http://localhost:3000/api/v1/redirects/${id}`, {
+      method: "DELETE",
+    });
+  }
   createdRedirects = [];
 });
 
@@ -88,4 +90,42 @@ test("can delete a missing redirect", async () => {
   });
 
   expect(res.status).toBe(200);
+});
+
+test("cannot create a redirect loop", async () => {
+  const first = await fetch("http://localhost:3000/api/v1/redirects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ destination: "will-update-to-loop" }),
+  });
+
+  const { id: firstId } = await first.json();
+  createdRedirects.push(firstId);
+
+  const second = await fetch(`http://localhost:3000/api/v1/redirects`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ destination: `http://localhost:3000/r/${firstId}` }),
+  });
+  const { id: secondId } = await second.json();
+  createdRedirects.push(secondId);
+
+  const patch = await fetch(
+    `http://localhost:3000/api/v1/redirects/${firstId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        destination: `http://localhost:3000/r/${secondId}`,
+      }),
+    },
+  );
+  expect(patch.status).toBe(400);
+  expect(patch.text()).resolves.toEqual("Redirect loop detected.");
 });
