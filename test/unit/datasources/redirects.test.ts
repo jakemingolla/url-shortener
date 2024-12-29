@@ -40,7 +40,7 @@ test("detects loop", async () => {
   );
 });
 
-test.only("loop limit exceeded", async () => {
+test("loop limit exceeded", async () => {
   // Because the beforeEach already created a (non-looping) chain of 101
   // redirects (over the loop detection limit), any attempt to modify the
   // existing chain will be detected as a loop.

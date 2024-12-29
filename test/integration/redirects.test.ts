@@ -2,10 +2,12 @@ import { expect, test, afterEach } from "bun:test";
 
 let createdRedirects: string[] = [];
 
-afterEach(() => {
-  createdRedirects.forEach((id) => {
-    fetch(`http://localhost:3000/redirects/${id}`, { method: "DELETE" });
-  });
+afterEach(async () => {
+  for (const id of createdRedirects) {
+    await fetch(`http://localhost:3000/api/v1/redirects/${id}`, {
+      method: "DELETE",
+    });
+  }
   createdRedirects = [];
 });
 
