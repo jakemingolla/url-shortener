@@ -3,6 +3,9 @@ import type { Insertable, Kysely, Selectable } from "kysely";
 import { sql } from "kysely";
 import crypto from "crypto";
 
+const loopDetectionLimit = 100;
+const extractIdRegex = /.*\/r\/([a-z0-9-]+)$/;
+
 export class RedirectsDatasource {
   constructor(private readonly db: Kysely<DB>) {}
 
@@ -57,5 +60,37 @@ export class RedirectsDatasource {
       .execute();
 
     return id;
+  }
+
+  async detectLoop(id: string, destination: string) {
+    const seen: string[] = [id];
+    let match: RegExpExecArray | null = null;
+    let count = 0;
+    while ((match = extractIdRegex.exec(destination))) {
+      if (!match) {
+        return false;
+      }
+
+      if (count > loopDetectionLimit) {
+        return true; // or error?
+      }
+
+      id = match[1];
+
+      if (seen.includes(id)) {
+        return true;
+      } else {
+        seen.push(id);
+      }
+
+      const redirect = await this.getRedirect(id);
+      if (!redirect) {
+        return false;
+      }
+
+      destination = redirect.destination;
+      count++;
+    }
+    return false;
   }
 }
