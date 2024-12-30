@@ -1,5 +1,6 @@
-import type { DB, Redirect } from "@/db/types";
-import type { Kysely, Selectable } from "kysely";
+import type { DB } from "@/db/types";
+import type { Kysely } from "kysely";
+import { exposedRedirectColumns } from "@/db/public-types";
 import { sql } from "kysely";
 import crypto from "crypto";
 
@@ -9,16 +10,6 @@ const loopDetectionLimit = 100;
 
 // Regex to extract a redirect ID from a URL
 const extractRedirectIDRegex = /.*\/r\/([a-z0-9-]+)$/;
-
-// Columns that are exposed to clients (ignores primary key).
-const exposedRedirectColumns = [
-  "id",
-  "destination",
-  "hits",
-  "createdAt",
-  "updatedAt",
-  "deletedAt",
-] as const satisfies (keyof Selectable<Redirect>)[];
 
 export class RedirectsDatasource {
   constructor(private readonly db: Kysely<DB>) {}
