@@ -3,8 +3,22 @@ import type { Kysely, Selectable } from "kysely";
 import { sql } from "kysely";
 import crypto from "crypto";
 
+// If a chain of redirects with destination URLs containing redirect IDs
+// exceeds this limit, we will consider it a loop and return an error.
 const loopDetectionLimit = 100;
+
+// Regex to extract a redirect ID from a URL
 const extractRedirectIDRegex = /.*\/r\/([a-z0-9-]+)$/;
+
+// Columns that are exposed to clients (ignores primary key).
+const exposedRedirectColumns = [
+  "id",
+  "destination",
+  "hits",
+  "createdAt",
+  "updatedAt",
+  "deletedAt",
+] as const satisfies (keyof Selectable<Redirect>)[];
 
 export class RedirectsDatasource {
   constructor(private readonly db: Kysely<DB>) {}
@@ -14,10 +28,10 @@ export class RedirectsDatasource {
    * @param id - The id of the redirect
    * @returns The redirect or undefined if it doesn't exist
    */
-  async getRedirect(id: string): Promise<Selectable<Redirect> | undefined> {
+  async getRedirect(id: string) {
     return await this.db
       .selectFrom("redirects")
-      .selectAll()
+      .select(exposedRedirectColumns)
       .where("id", "=", id)
       .where("deletedAt", "is", null)
       .executeTakeFirst();
