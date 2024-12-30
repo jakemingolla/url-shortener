@@ -9,6 +9,11 @@ const extractRedirectIDRegex = /.*\/r\/([a-z0-9-]+)$/;
 export class RedirectsDatasource {
   constructor(private readonly db: Kysely<DB>) {}
 
+  /**
+   * Gets a redirect by id
+   * @param id - The id of the redirect
+   * @returns The redirect or undefined if it doesn't exist
+   */
   async getRedirect(id: string): Promise<Selectable<Redirect> | undefined> {
     return await this.db
       .selectFrom("redirects")
@@ -18,6 +23,11 @@ export class RedirectsDatasource {
       .executeTakeFirst();
   }
 
+  /**
+   * Creates a new redirect
+   * @param destination - The destination URL
+   * @returns The id of the new redirect
+   */
   async createRedirect(destination: string) {
     const id = crypto.randomUUID();
 
@@ -26,6 +36,11 @@ export class RedirectsDatasource {
     return id;
   }
 
+  /**
+   * Adds a hit to a redirect
+   * @param id - The id of the redirect
+   * @returns The id of the redirect
+   */
   async addRedirectHit(id: string) {
     const now = new Date();
 
@@ -37,6 +52,12 @@ export class RedirectsDatasource {
       .execute();
   }
 
+  /**
+   * Updates the destination of a redirect
+   * @param id - The id of the redirect
+   * @param destination - The new destination URL
+   * @returns The id of the redirect
+   */
   async updateDestination(id: string, destination: string) {
     const now = new Date();
 
@@ -50,6 +71,11 @@ export class RedirectsDatasource {
     return id;
   }
 
+  /**
+   * Soft deletes a redirect
+   * @param id - The id of the redirect
+   * @returns The id of the redirect
+   */
   async softDeleteRedirect(id: string) {
     const now = new Date();
 
@@ -62,6 +88,14 @@ export class RedirectsDatasource {
     return id;
   }
 
+  /**
+   * Detects a loop in a redirect chain. A loop is detected if:
+   * - The destination URL contains a redirect ID that has already been seen
+   * - The number of redirects in the chain exceeds the loop detection limit
+   * @param id - The id of the redirect
+   * @param destination - The destination URL
+   * @returns Whether a loop was detected
+   */
   async detectLoop(id: string, destination: string) {
     const seen: string[] = [id];
     let match: RegExpExecArray | null = null;

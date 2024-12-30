@@ -3,9 +3,19 @@ import { swagger } from "@elysiajs/swagger";
 import { admin } from "@/services/admin";
 import { redirects } from "@/services/redirects";
 import { runtime } from "@/services/runtime";
+import { version } from "../package.json";
 
 const app = new Elysia()
-  .use(swagger())
+  .use(
+    swagger({
+      documentation: {
+        info: {
+          title: "url-shortener",
+          version,
+        },
+      },
+    }),
+  )
   .group("/api/v1", (app) => app.use(admin).use(redirects))
   .use(runtime);
 
