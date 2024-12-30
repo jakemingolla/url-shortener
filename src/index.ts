@@ -1,4 +1,3 @@
-import { version } from "../package.json";
 import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { admin } from "@/services/admin";
@@ -10,6 +9,6 @@ const app = new Elysia()
   .group("/api/v1", (app) => app.use(admin).use(redirects))
   .use(runtime);
 
-const server = app.listen(3000);
+app.listen(3000);
 
 console.log(`Listening on http://localhost:3000`);

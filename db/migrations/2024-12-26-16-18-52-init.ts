@@ -1,7 +1,8 @@
 import type { Kysely } from "kysely";
 import { sql } from "kysely";
+import type { DB } from "../../src/db/types";
 
-export async function up(db: Kysely<any>): Promise<void> {
+export async function up(db: Kysely<DB>): Promise<void> {
   await db.schema
     .createTable("redirects")
     .addColumn("pk", "serial", (col) => col.primaryKey().notNull())
@@ -18,6 +19,6 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 }
 
-export async function down(db: Kysely<any>): Promise<void> {
+export async function down(db: Kysely<DB>): Promise<void> {
   await db.schema.dropTable("redirects").execute();
 }

@@ -1,7 +1,6 @@
 import { RedirectsDatasource } from "@/datasources/redirects";
 import type { DB } from "@/db/types";
 import { expect, test, afterEach, mock, beforeEach } from "bun:test";
-import type { Mock } from "bun:test";
 import type { Kysely, Selectable } from "kysely";
 import type { Redirect } from "@/db/types";
 
