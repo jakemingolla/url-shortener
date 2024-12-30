@@ -4,10 +4,19 @@ import { db } from "@/db";
 
 export const redirects = new Elysia()
   .decorate("datasource", new RedirectsDatasource(db))
-  .get("/redirects/:id", async ({ params: { id }, datasource, error }) => {
-    const redirect = await datasource.getRedirect(id);
-    return redirect || error(404);
-  })
+  .get(
+    "/redirects/:id",
+    async ({ params: { id }, datasource, error }) => {
+      const redirect = await datasource.getRedirect(id);
+      return redirect || error(404);
+    },
+    {
+      detail: {
+        summary: "Gets a redirect by id",
+        tags: ["redirects"],
+      },
+    },
+  )
   .post(
     "/redirects",
     async ({ body: { destination }, datasource }) => {
@@ -18,6 +27,10 @@ export const redirects = new Elysia()
       body: t.Object({
         destination: t.String(),
       }),
+      detail: {
+        summary: "Creates a new redirect",
+        tags: ["redirects"],
+      },
     },
   )
   .delete(
@@ -30,6 +43,10 @@ export const redirects = new Elysia()
       params: t.Object({
         id: t.String(),
       }),
+      detail: {
+        summary: "Deletes a redirect",
+        tags: ["redirects"],
+      },
     },
   )
   .patch(
@@ -46,5 +63,12 @@ export const redirects = new Elysia()
       body: t.Object({
         destination: t.String(),
       }),
+      detail: {
+        summary: "Updates a redirect's destination.",
+        description:
+          "Updates a redirect's destination. " +
+          "Attempts to detect loops and will return a 400 error if a loop is detected.",
+        tags: ["redirects"],
+      },
     },
   );

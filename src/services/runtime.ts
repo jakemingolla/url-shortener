@@ -15,4 +15,10 @@ export const runtime = new Elysia()
         return error(404);
       }
     },
+    {
+      detail: {
+        summary: "Redirects to a destination URL",
+        tags: ["redirects"],
+      },
+    },
   );
