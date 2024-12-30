@@ -1,6 +1,8 @@
 import type { Kysely } from "kysely";
 
-export async function up(db: Kysely<any>): Promise<void> {
+import type { DB } from "../../src/db/types";
+
+export async function up(db: Kysely<DB>): Promise<void> {
   await db.schema
     .createIndex("url_shortener.redirects_unique_id_idx")
     .on("url_shortener.redirects")
@@ -9,6 +11,6 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 }
 
-export async function down(db: Kysely<any>): Promise<void> {
+export async function down(db: Kysely<DB>): Promise<void> {
   await db.schema.dropIndex("url_shortener.redirects_unique_id_idx").execute();
 }

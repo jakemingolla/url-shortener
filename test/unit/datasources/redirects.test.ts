@@ -1,7 +1,6 @@
 import { RedirectsDatasource } from "@/datasources/redirects";
 import type { DB } from "@/db/types";
 import { expect, test, afterEach, mock, beforeEach } from "bun:test";
-import type { Mock } from "bun:test";
 import type { Kysely, Selectable } from "kysely";
 import type { Redirect } from "@/db/types";
 
@@ -36,7 +35,7 @@ afterEach(() => {
 
 test("detects loop", async () => {
   expect(redirects.detectLoop("5", "http://localhost:3000/r/0")).resolves.toBe(
-    true,
+    true
   );
 });
 
@@ -45,6 +44,6 @@ test("loop limit exceeded", async () => {
   // redirects (over the loop detection limit), any attempt to modify the
   // existing chain will be detected as a loop.
   expect(redirects.detectLoop("0", "http://localhost:3000/r/1")).resolves.toBe(
-    true,
+    true
   );
 });

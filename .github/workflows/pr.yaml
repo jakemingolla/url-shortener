@@ -27,18 +27,15 @@ jobs:
         with:
           bun-version-file: ".bun-version"
       - run: bun install --frozen-lockfile
-      - run: |
-          cat .env
-          echo "$DOTENV_PRIVATE_KEY" | rev
-          bun run config:get PGHOST
+      - run: bun run lint
       - run: bun start
       - run: bun run wait-for-startup
         timeout-minutes: 1
       - run: bun run migration:up
       - run: bun run seed:up
       - run: bun test
-      - run: |
+      - if: always()
+        run: |
           bun run logs:app
           bun run logs:postgres
           bun stop
-        if: always()
