@@ -30,7 +30,7 @@ export const publicRedirectSchema = t.Object({
     format: "date-time",
     description: "The date the redirect was last updated",
   }),
-  deletedAt: t.Any({
+  deletedAt: t.Union([t.Date(), t.Null()], {
     description: "The date the redirect was deleted",
   }),
 });
