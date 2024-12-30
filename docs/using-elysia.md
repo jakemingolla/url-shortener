@@ -1,4 +1,4 @@
-# Elysia Review
+# `elysia` Review
 
 I've used [`elysia`](https://elysiajs.com/) for this project as opposed to a
 'regular' `express` setup for a REST API server. Here are my thoughts:

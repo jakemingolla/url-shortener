@@ -145,8 +145,17 @@ Manage your database schema with the provided migration scripts.
   ```
 
 - **Create New Migration**
+
   ```bash
   bun run migration:make <name>
+  ```
+
+- **Update `src/db/types.d.ts`**
+
+  This will adjust the TypeScript types to match what's in the current local database.
+
+  ```bash
+  bun run generate-types
   ```
 
 ## Contributing
